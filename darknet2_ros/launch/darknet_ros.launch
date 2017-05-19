@@ -1,12 +1,12 @@
 <launch>
   <!-- Arguments to generate darknet network. -->
-  <arg name="yolo_model"                 default="tiny-yolo-voc"/>
+  <arg name="yolo_model"                 default="yolo"/>
   <arg name="yolo_weights_path"          default="$(find darknet2_ros)/weights"/>
   <arg name="yolo_cfg_model"             default="$(arg yolo_model).cfg"/>
   <arg name="yolo_weights_model"         default="$(arg yolo_model).weights"/>
 
   <!-- Name of camera topic -->
-  <arg name="camera_topic_name"          default="/camera/rgb/image_raw"/>
+  <arg name="camera_topic_name"          default="/camera/rgb/image_rect_color"/>
 
   <!-- Name of CheckForObjectsAction (darknet2_ros_msgs) -->
   <arg name="camera_action_name"         default="/darknet/check_for_objects"/>
