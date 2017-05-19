@@ -125,24 +125,13 @@ void YoloObjectDetector::init()
 
 
   // Get classes.
-  if (cfgModel.find("voc") != std::string::npos) {
-	  for (int i = 0; i < numClasses_; i++)
-		  {
-			char *names = new char[classLabels_[i].length() + 1];
-			strcpy(names, classLabels_[i].c_str());
-			vocNames_[i] = names;
-		  }
-	  numClasses = numClasses_;
+  for (int i = 0; i < numClasses_; i++)
+  {
+    char *names = new char[classLabels_[i].length() + 1];
+    strcpy(names, classLabels_[i].c_str());
+    vocNames_[i] = names;
   }
-  else {
-	  for (int i = 0; i < numClasses_; i++)
-		  {
-			char *names = new char[cocoLabels_[i].length() + 1];
-			strcpy(names, cocoLabels_[i].c_str());
-			vocNames_[i] = names;
-		  }
-	  numClasses = numClasses_;
-  }
+  int numClasses = numClasses_;
 
   // Load network.
   load_network_demo(cfg_, weights_, data_,

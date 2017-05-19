@@ -64,7 +64,6 @@ static darknet2_ros::RosBox_ *ROI_boxes;
 static bool view_image;
 static int wait_key_delay;
 static int full_screen;
-
 static pthread_t fetch_thread;
 static pthread_t detect_thread;
 static double tval_before, tval_after;
@@ -276,8 +275,8 @@ extern "C" darknet2_ros::RosBox_ *demo_yolo()
 
     free_image(disp);
     disp  = det;
-    det   = in;
-    det_s = in_s;
+    free_image(in);
+    free_image(in_s);
 
     tval_after = get_wall_time();
     float curr = 1./(tval_after - tval_before);
