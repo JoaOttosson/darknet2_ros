@@ -145,7 +145,7 @@ void YoloObjectDetector::init()
   // Initialize publisher and subscriber.
   imageSubscriber_ = imageTransport_.subscribe(cameraTopicName_, 1, &YoloObjectDetector::cameraCallback,this);
   objectPublisher_ = nodeHandle_.advertise<std_msgs::Int8>("found_object", 1);
-  boundingBoxesPublisher_ = nodeHandle_.advertise<darknet2_ros_msgs::BoundingBoxes>("YOLO_BoundingBoxes", 1);
+  boundingBoxesPublisher_ = nodeHandle_.advertise<darknet2_ros_msgs::BoundingBoxes>("/YOLO_BoundingBoxes", 1);
 
   // Action servers.
   std::string checkForObjectsActionName;
