@@ -6,7 +6,7 @@
   <arg name="yolo_weights_model"         default="$(arg yolo_model).weights"/>
 
   <!-- Name of camera topic -->
-  <arg name="camera_topic_name"          default="/camera/rgb/image_rect_color"/>
+  <arg name="camera_topic_name"          default="camera/rgb/image_rect_color"/>
 
   <!-- Name of CheckForObjectsAction (darknet2_ros_msgs) -->
   <arg name="camera_action_name"         default="/darknet/check_for_objects"/>
@@ -24,7 +24,7 @@
   <arg name="wait_key_delay_in_opencv"   default="2"/>
 
   <!-- Start darknet and ros wrapper -->
-  <node pkg="darknet2_ros" type="darknet2_ros" name="darknet2_ros" output="screen">
+  <node pkg="darknet2_ros" type="darknet2_ros" name="$(anon yolo_v2)" output="screen">
     <param name="cfg_model"             value="$(arg yolo_cfg_model)" />
     <param name="weights_model"         value="$(arg yolo_weights_model)" />
     <param name="weights_path"          value="$(arg yolo_weights_path)" />

@@ -56,10 +56,10 @@ IplImage* get_ipl_image()
 bool YoloObjectDetector::readParameters()
 {
   // Load common parameters.
-  nodeHandle_.param("/darknet2_ros/camera_topic", cameraTopicName_, std::string("/camera/image_raw"));
-  nodeHandle_.param("/darknet2_ros/view_image", viewImage_, true);
-  nodeHandle_.param("/darknet2_ros/darknet2_image_viewer", darknetImageViewer_, false);
-  nodeHandle_.param("/darknet2_ros/wait_key_delay", waitKeyDelay_, 3);
+  nodeHandle_.param("camera_topic", cameraTopicName_, std::string("/camera/image_raw"));
+  nodeHandle_.param("view_image", viewImage_, true);
+  nodeHandle_.param("darknet2_image_viewer", darknetImageViewer_, false);
+  nodeHandle_.param("wait_key_delay", waitKeyDelay_, 3);
 
   // Check if Xserver is running on Linux.
   if(XOpenDisplay(NULL))
@@ -101,17 +101,17 @@ void YoloObjectDetector::init()
 
   // Threshold of object detection.
   float thresh;
-  nodeHandle_.param("/darknet2_ros/object_threshold", thresh, (float)0.3);
+  nodeHandle_.param("object_threshold", thresh, (float)0.3);
 
   // Path to weights file.
-  nodeHandle_.param("/darknet2_ros/weights_model", weightsModel, std::string("tiny-yolo-voc.weights"));
-  nodeHandle_.param("/darknet2_ros/weights_path", weightsPath, std::string("/default"));
+  nodeHandle_.param("weights_model", weightsModel, std::string("tiny-yolo-voc.weights"));
+  nodeHandle_.param("weights_path", weightsPath, std::string("/default"));
   weightsPath += "/" + weightsModel;
   weights_ = new char[weightsPath.length() + 1];
   strcpy(weights_, weightsPath.c_str());
 
   // Path to config file.
-  nodeHandle_.param("/darknet2_ros/cfg_model", cfgModel, std::string("tiny-yolo-voc.cfg"));
+  nodeHandle_.param("cfg_model", cfgModel, std::string("tiny-yolo-voc.cfg"));
   configPath = darknetFilePath_;
   configPath += "/cfg/" + cfgModel;
   cfg_ = new char[configPath.length() + 1];
@@ -149,7 +149,7 @@ void YoloObjectDetector::init()
 
   // Action servers.
   std::string checkForObjectsActionName;
-  nodeHandle_.param("/darknet2_ros/camera_action", checkForObjectsActionName, std::string("/darknet/check_for_objects"));
+  nodeHandle_.param("camera_action", checkForObjectsActionName, std::string("/darknet/check_for_objects"));
   checkForObjectsActionServer_.reset(
       new CheckForObjectsActionServer(
           nodeHandle_, checkForObjectsActionName,
