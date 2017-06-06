@@ -24,7 +24,7 @@
   <arg name="wait_key_delay_in_opencv"   default="2"/>
 
   <!-- Start darknet and ros wrapper -->
-  <node pkg="darknet2_ros" type="darknet2_ros" name="$(anon yolo_v2)" output="screen">
+  <node pkg="darknet2_ros" type="darknet2_ros" name="darknet2_ros" output="screen">
     <param name="cfg_model"             value="$(arg yolo_cfg_model)" />
     <param name="weights_model"         value="$(arg yolo_weights_model)" />
     <param name="weights_path"          value="$(arg yolo_weights_path)" />
