@@ -265,7 +265,7 @@ void YoloObjectDetector::runYolo(cv::Mat &fullFrame, int id)
     std_msgs::Int8 msg;
     msg.data = 0;
     objectPublisher_.publish(msg);
-    boundingBoxesPublisher_.publish(darknet2_ros_msgs::BoundingBox()); // empty bounding boxes
+    boundingBoxesPublisher_.publish(darknet2_ros_msgs::BoundingBoxes()); // empty bounding boxes
   }
   if (isCheckingForObjects())
   {
