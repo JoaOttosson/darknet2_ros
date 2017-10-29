@@ -73,6 +73,7 @@ find_package(catkin REQUIRED
     std_msgs
     actionlib
     darknet2_ros_msgs
+    darknet_msgs
     image_transport
 )
 
@@ -88,6 +89,7 @@ catkin_package(
     rospy
     std_msgs
     darknet2_ros_msgs
+    darknet_msgs
     image_transport
   DEPENDS
     Boost
@@ -216,7 +218,7 @@ else()
   )
 endif()
 
-add_dependencies(${PROJECT_NAME} darknet2_ros_msgs_generate_messages_cpp) 
+add_dependencies(${PROJECT_NAME} darknet2_ros_msgs_generate_messages_cpp darknet_msgs_generate_messages_cpp) 
 
 # Download tiny-yolo-voc.weights
 set(PATH "${CMAKE_CURRENT_SOURCE_DIR}/weights")

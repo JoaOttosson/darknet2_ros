@@ -20,6 +20,7 @@
   <depend>sensor_msgs</depend>
   <depend>message_generation</depend>
   <depend>darknet2_ros_msgs</depend>
+  <depend>darknet_msgs</depend>
   <depend>actionlib</depend>
   
   <!-- Test dependencies -->

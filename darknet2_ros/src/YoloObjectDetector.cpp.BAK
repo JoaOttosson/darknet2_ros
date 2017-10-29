@@ -145,7 +145,7 @@ void YoloObjectDetector::init()
   // Initialize publisher and subscriber.
   imageSubscriber_ = imageTransport_.subscribe(cameraTopicName_, 1, &YoloObjectDetector::cameraCallback,this);
   objectPublisher_ = nodeHandle_.advertise<std_msgs::Int8>("found_object", 1);
-  boundingBoxesPublisher_ = nodeHandle_.advertise<darknet_msgs::bbox_array_stamped>("/yolo_bboxes", 1);
+  boundingBoxesPublisher_ = nodeHandle_.advertise<darknet2_ros_msgs::BoundingBoxes>("/YOLO_BoundingBoxes", 1);
 
   // Action servers.
   std::string checkForObjectsActionName;
@@ -183,7 +183,7 @@ YoloObjectDetector::~YoloObjectDetector()
 void YoloObjectDetector::drawBoxes(cv::Mat &inputFrame, std::vector<RosBox_> &rosBoxes, int &numberOfObjects,
    cv::Scalar &rosBoxColor, const std::string &objectLabel)
 {
-  darknet_msgs::bbox boundingBox;
+  darknet2_ros_msgs::BoundingBox boundingBox;
 
   for (int i = 0; i < numberOfObjects; i++)
   {
@@ -192,15 +192,13 @@ void YoloObjectDetector::drawBoxes(cv::Mat &inputFrame, std::vector<RosBox_> &ro
      int xmax = (rosBoxes[i].x + rosBoxes[i].w/2)*frameWidth_;
      int ymax = (rosBoxes[i].y + rosBoxes[i].h/2)*frameHeight_;
 
-     //     boundingBox.header.stamp = ros::Time::now();
-     //     boundingBox.header.frame_id = "sibot/camera_rgb_optical_frame";
      boundingBox.Class = objectLabel;
      boundingBox.probability = rosBoxes[i].prob;
      boundingBox.xmin = xmin;
      boundingBox.ymin = ymin;
      boundingBox.xmax = xmax;
      boundingBox.ymax = ymax;
-     boundingBoxesResults_.bboxes.push_back(boundingBox);
+     boundingBoxesResults_.boundingBoxes.push_back(boundingBox);
 
      // draw bounding box of first object found
      cv::Point topLeftCorner = cv::Point(xmin, ymin);
@@ -260,8 +258,6 @@ void YoloObjectDetector::runYolo(cv::Mat &fullFrame, int id)
       if (rosBoxCounter_[i] > 0) drawBoxes(inputFrame, rosBoxes_[i],
                                              rosBoxCounter_[i], rosBoxColors_[i], classLabels_[i]);
     }
-    boundingBoxesResults_.header.stamp = ros::Time::now();
-    boundingBoxesResults_.header.frame_id = "sibot/base_link";
     boundingBoxesPublisher_.publish(boundingBoxesResults_);
   }
   else
@@ -269,17 +265,17 @@ void YoloObjectDetector::runYolo(cv::Mat &fullFrame, int id)
     std_msgs::Int8 msg;
     msg.data = 0;
     objectPublisher_.publish(msg);
-    boundingBoxesPublisher_.publish(darknet_msgs::bbox_array_stamped()); // empty bounding boxes
+    boundingBoxesPublisher_.publish(darknet2_ros_msgs::BoundingBoxes()); // empty bounding boxes
   }
   if (isCheckingForObjects())
   {
     ROS_DEBUG("[YoloObjectDetector] check for objects in image.");
-    darknet_msgs::CheckForObjectsResult objectsActionResult;
+    darknet2_ros_msgs::CheckForObjectsResult objectsActionResult;
     objectsActionResult.id = id;
     objectsActionResult.boundingBoxes = boundingBoxesResults_;
     checkForObjectsActionServer_->setSucceeded(objectsActionResult,"Send bounding boxes.");
   }
-  boundingBoxesResults_.bboxes.clear();
+  boundingBoxesResults_.boundingBoxes.clear();
 
   for (int i = 0; i < numClasses_; i++)
   {
@@ -327,7 +323,7 @@ void YoloObjectDetector::checkForObjectsActionGoalCB()
 {
   ROS_INFO("[YoloObjectDetector] Start check for objects action.");
 
-  boost::shared_ptr<const darknet_msgs::CheckForObjectsGoal> imageActionPtr = checkForObjectsActionServer_->acceptNewGoal();
+  boost::shared_ptr<const darknet2_ros_msgs::CheckForObjectsGoal> imageActionPtr = checkForObjectsActionServer_->acceptNewGoal();
   sensor_msgs::Image imageAction = imageActionPtr->image;
 
   cv_bridge::CvImagePtr cam_image;
@@ -370,7 +366,7 @@ bool YoloObjectDetector::publishDetectionImage(const cv::Mat& detectionImage)
   if (detectionImagePublisher_.getNumSubscribers() < 1) return false;
   cv_bridge::CvImage cvImage;
   cvImage.header.stamp = ros::Time::now();
-  cvImage.header.frame_id = "sibot/camera_rgb_optical_frame";
+  cvImage.header.frame_id = "detection_image";
   cvImage.encoding = sensor_msgs::image_encodings::BGR8;
   cvImage.image    = detectionImage;
   detectionImagePublisher_.publish(*cvImage.toImageMsg());
