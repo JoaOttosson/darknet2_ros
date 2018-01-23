@@ -209,7 +209,7 @@ void YoloObjectDetector::drawBoxes(cv::Mat &inputFrame, std::vector<RosBox_> &ro
      std::ostringstream probability;
      probability << rosBoxes[i].prob*100;
      //cv::putText(inputFrame, objectLabel + " (" + probability.str() + "%)", cv::Point(xmin, ymax+15), cv::FONT_HERSHEY_PLAIN, 1.0, rosBoxColor, 2.0);
-     cv::putText(inputFrame, objectLabel, cv::Point(xmin, ymin-15), cv::FONT_HERSHEY_PLAIN, 2.0, rosBoxColor, 2.0);
+     cv::putText(inputFrame, objectLabel, cv::Point(xmin, ymin-15), cv::FONT_HERSHEY_PLAIN, 1.0, rosBoxColor, 2.0);
   }
 }
 
