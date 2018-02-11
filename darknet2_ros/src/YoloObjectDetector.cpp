@@ -192,8 +192,8 @@ void YoloObjectDetector::drawBoxes(cv::Mat &inputFrame, std::vector<RosBox_> &ro
      int xmax = (rosBoxes[i].x + rosBoxes[i].w/2)*frameWidth_;
      int ymax = (rosBoxes[i].y + rosBoxes[i].h/2)*frameHeight_;
 
-     //     boundingBox.header.stamp = ros::Time::now();
-     //     boundingBox.header.frame_id = "sibot/camera_rgb_optical_frame";
+     //boundingBox.header.stamp = ros::Time::now();
+     //boundingBox.header.frame_id = "sibot/camera_rgb_optical_frame";
      boundingBox.Class = objectLabel;
      boundingBox.probability = rosBoxes[i].prob;
      boundingBox.xmin = xmin;
@@ -261,7 +261,7 @@ void YoloObjectDetector::runYolo(cv::Mat &fullFrame, int id)
                                              rosBoxCounter_[i], rosBoxColors_[i], classLabels_[i]);
     }
     boundingBoxesResults_.header.stamp = ros::Time::now();
-    boundingBoxesResults_.header.frame_id = "sibot/base_link";
+    boundingBoxesResults_.header.frame_id = "sibot/camera_rgb_optical_frame";
     boundingBoxesPublisher_.publish(boundingBoxesResults_);
   }
   else
@@ -269,8 +269,13 @@ void YoloObjectDetector::runYolo(cv::Mat &fullFrame, int id)
     std_msgs::Int8 msg;
     msg.data = 0;
     objectPublisher_.publish(msg);
-    boundingBoxesPublisher_.publish(darknet_msgs::bbox_array_stamped()); // empty bounding boxes
+    //boundingBoxesPublisher_.publish(darknet_msgs::bbox_array_stamped()); // empty bounding boxes
   }
+
+  boundingBoxesResults_.header.stamp = ros::Time::now();
+  boundingBoxesResults_.header.frame_id = "sibot/camera_rgb_optical_frame";
+  boundingBoxesPublisher_.publish(boundingBoxesResults_);
+
   if (isCheckingForObjects())
   {
     ROS_DEBUG("[YoloObjectDetector] check for objects in image.");
