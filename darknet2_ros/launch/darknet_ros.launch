@@ -5,7 +5,12 @@
   <arg name="yolo_cfg_model"             default="$(arg yolo_model).cfg"/>
   <arg name="yolo_weights_model"         default="$(arg yolo_model).weights"/>
   <arg name="output"                     default="screen"/>
-
+  <arg name="omni"                       default="false"/>
+  
+  <!-- Create a separate node name for the omni image -->
+  <arg name="node_name"                 value="darknet_ros"      unless="$(arg omni)" />
+  <arg name="node_name"                 value="darknet_ros_omni" if="$(arg omni)" />
+  
   <!-- Name of camera topic -->
   <arg name="camera_topic_name"          default="camera/rgb/image_rect_color"/>
 
@@ -25,7 +30,7 @@
   <arg name="wait_key_delay_in_opencv"   default="2"/>
 
   <!-- Start darknet and ros wrapper -->
-  <node pkg="darknet2_ros" type="darknet2_ros" name="darknet2_ros" output="$(arg output)">
+  <node pkg="darknet2_ros" type="darknet2_ros" name="$(arg node_name)" output="$(arg output)">
     <param name="cfg_model"             value="$(arg yolo_cfg_model)" />
     <param name="weights_model"         value="$(arg yolo_weights_model)" />
     <param name="weights_path"          value="$(arg yolo_weights_path)" />
