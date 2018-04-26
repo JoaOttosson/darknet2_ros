@@ -67,7 +67,7 @@ find_package(Boost REQUIRED COMPONENTS thread)
 find_package(OpenCV 3 REQUIRED)
 find_package(catkin REQUIRED
   COMPONENTS
-    cv3_bridge
+    cv_bridge
     roscpp
     rospy
     std_msgs
@@ -83,7 +83,7 @@ add_definitions(-O4 -g)
 
 catkin_package(
   CATKIN_DEPENDS
-    cv3_bridge
+    cv_bridge
     roscpp
     actionlib
     rospy
