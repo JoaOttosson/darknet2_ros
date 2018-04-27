@@ -35,8 +35,6 @@ if (CUDA_FOUND)
     ${CUDA_NVCC_FLAGS}
 #    -std=c++11
     -O3
-    -gencode=arch=compute_20,code=sm_20
-    -gencode=arch=compute_20,code=compute_20
     -gencode=arch=compute_30,code=sm_30
     -gencode=arch=compute_35,code=sm_35
 #    -gencode=arch=compute_50,code=sm_50
@@ -67,7 +65,7 @@ find_package(Boost REQUIRED COMPONENTS thread)
 find_package(OpenCV 3 REQUIRED)
 find_package(catkin REQUIRED
   COMPONENTS
-    cv3_bridge
+    cv_bridge
     roscpp
     rospy
     std_msgs
@@ -83,7 +81,7 @@ add_definitions(-O4 -g)
 
 catkin_package(
   CATKIN_DEPENDS
-    cv3_bridge
+    cv_bridge
     roscpp
     actionlib
     rospy
